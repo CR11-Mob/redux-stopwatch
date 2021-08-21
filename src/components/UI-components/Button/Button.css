@@ -1,0 +1,15 @@
+.btn {
+  font-size: 1.3rem;
+  letter-spacing: 1px;
+  border: 2px solid rgb(121, 121, 121);
+  background-color: white;
+  font-weight: 100 !important;
+  color: rgb(54, 54, 54);
+  padding: 0 5px;
+}
+
+.btn:hover {
+  background-color: whitesmoke;
+  border-color: whitesmoke;
+  transition: 0.2s ease-out;
+}

@@ -1,0 +1,17 @@
+.label {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  background-color: whitesmoke;
+}
+
+.label > span {
+  text-align: center;
+  width: 15%;
+  background-color: rgba(194, 243, 194, 0.8);
+  font-size: 1.2rem;
+  letter-spacing: 2px;
+  font-weight: 100;
+  color: rgba(34, 34, 34, 1);
+}

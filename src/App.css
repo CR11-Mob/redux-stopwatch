@@ -1,10 +1,20 @@
 * {
   box-sizing: border-box;
-  border: 1px solid red;
+  /* border: 1px solid red; */
 }
 
 .container {
-  min-height: 100vh;
+  height: 100vh;
   display: flex;
   flex-direction: column;
+  /* justify-content: center; */
+  align-items: center;
+}
+
+.heading {
+  padding: 10px 0;
+  font-size: 2rem;
+  font-weight: 200;
+  letter-spacing: 2px;
+  color: rgb(151, 151, 151);
 }
