@@ -4,7 +4,7 @@ import Stopwatch from "./components/Stopwatch";
 function App() {
   return (
     <div className="container">
-      <div className="heading">Redux Stopwatch</div>
+      <div className="heading">React Stopwatch</div>
       <Stopwatch />
     </div>
   );

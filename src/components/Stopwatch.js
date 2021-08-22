@@ -11,27 +11,23 @@ export default function Stopwatch() {
   const [timerObj, setTimerObj] = useState({
     time: { h: 0, m: 0, s: 0 },
     seconds: 0,
-    laps: [
-      { h: 0, m: 0, s: 0 },
-      { h: 1, m: 1, s: 1 },
-    ],
   });
-  // console.log();
 
-  const [timeInterval, setTimeInterval] = useState(0);
+  const [laps, setLaps] = useState([]);
+
+  const [timeInterval, setTimeInterval] = useState(null);
 
   const [pauseStatus, setPauseStatus] = useState(false);
 
   let { h, m, s } = timeFormatter(timerObj.time);
 
   useEffect(() => {
-    // console.log(timerObj.seconds);
-    console.log(timerObj.laps);
+    console.log(laps);
     console.log(timerObj);
-    // console.log(timeInterval);
-  }, [timerObj]);
+  }, [timerObj, laps]);
 
   // start stopwatch
+
   const startTimer = () => {
     if (pauseStatus || timerObj.seconds === 0) {
       setTimeInterval(setInterval(countDown, 1000));
@@ -40,6 +36,7 @@ export default function Stopwatch() {
   };
 
   // counting stopwatch timer
+
   const countDown = () => {
     let seconds = ++timerObj.seconds;
     let time = secondsToTime(seconds);
@@ -53,34 +50,36 @@ export default function Stopwatch() {
   };
 
   // pause stopwatch
+
   const stopTimer = () => {
     clearInterval(timeInterval);
     setPauseStatus(true);
   };
 
+  // laps
+
   const lapTimer = () => {
     if (!pauseStatus && timerObj.seconds !== 0) {
-      // console.log("laps array:", timerObj.laps);
-      let newlaps = [...timerObj.laps];
+      let newlaps = [...laps];
       newlaps.push({
         ...timerObj.time,
       });
 
-      setTimerObj({
-        ...timerObj,
-        laps: newlaps,
-      });
+      setLaps(newlaps);
     }
   };
 
   // reset stopwatch
+
   const resetTimer = () => {
     clearInterval(timeInterval);
+
     setTimerObj({
       time: { h: 0, m: 0, s: 0 },
       seconds: 0,
-      laps: [],
     });
+
+    setLaps([]);
   };
 
   return (
@@ -95,14 +94,34 @@ export default function Stopwatch() {
           <Button clicked={lapTimer}> lap </Button>
           <Button clicked={resetTimer}> reset </Button>
         </div>
-        <div className="time-laps">
-          {timerObj.laps.length !== 0 &&
-            timerObj.laps.map((lap, id) => {
-              let { h, m, s } = timeFormatter(lap);
-              return <Label key={id} lapTime={`${h}:${m}:${s}`} />;
-            })}
-        </div>
+      </div>
+      <div className="time-laps">
+        {laps.length !== 0 &&
+          laps.map((lap, id) => {
+            let { h, m, s } = timeFormatter(lap);
+            return <Label key={id} lapTime={`${h}:${m}:${s}`} />;
+          })}
       </div>
     </>
   );
 }
+
+// Rax's Code
+
+// const [startTime, setStartTime] = useState(Math.floor(Date.now() / 1000));
+// const [currentTime, setCurrentTime] = useState(Math.floor(Date.now() / 1000));
+
+// useEffect(() => {
+//   const seccs = currentTime - startTime;
+//   setTimerObj({
+//     ...timerObj,
+//     time: secondsToTime(seccs),
+//     seconds: seccs,
+//   });
+// }, [currentTime]);
+
+// useEffect(() => {
+//   setInterval(() => {
+//     setCurrentTime(Math.floor(Date.now() / 1000));
+//   }, 1000);
+// }, []);
