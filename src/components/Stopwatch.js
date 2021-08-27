@@ -1,6 +1,6 @@
 import "./Stopwatch.css";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 import Button from "./UI-components/Button/Button";
 import Label from "./UI-components/Label/Label";
