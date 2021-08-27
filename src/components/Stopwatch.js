@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
 import "./Stopwatch.css";
+
+import { useState, useEffect } from "react";
 
 import Button from "./UI-components/Button/Button";
 import Label from "./UI-components/Label/Label";
@@ -7,79 +8,61 @@ import Label from "./UI-components/Label/Label";
 import timeFormatter from "../utilies/timeFormatter";
 import secondsToTime from "../utilies/secondsToTime";
 
-export default function Stopwatch() {
-  const [timerObj, setTimerObj] = useState({
-    time: { h: 0, m: 0, s: 0 },
-    seconds: 0,
-  });
+import { useDispatch, useSelector } from "react-redux";
 
-  const [laps, setLaps] = useState([]);
+import { startCount, stopCount, resetTimer } from "../store/timer/actions";
+import { addLap, resetLap } from "../store/laps/actions";
+
+export default function Stopwatch() {
+  const dispatch = useDispatch();
+
+  const time = useSelector((state) => state.tmr.time);
+  const seconds = useSelector((state) => state.tmr.seconds);
+  const pauseStatus = useSelector((state) => state.tmr.pauseStatus);
+  console.log({ time, pauseStatus, seconds });
+
+  const laps = useSelector((state) => state.lpr);
+  console.log(laps);
 
   const [timeInterval, setTimeInterval] = useState(null);
 
-  const [pauseStatus, setPauseStatus] = useState(false);
+  let { h, m, s } = timeFormatter(time);
 
-  let { h, m, s } = timeFormatter(timerObj.time);
-
-  useEffect(() => {
-    console.log(laps);
-    console.log(timerObj);
-  }, [timerObj, laps]);
-
-  // start stopwatch
+  // Start Timer
 
   const startTimer = () => {
-    if (pauseStatus || timerObj.seconds === 0) {
+    if (pauseStatus || seconds === 0) {
       setTimeInterval(setInterval(countDown, 1000));
-      setPauseStatus(false);
     }
   };
 
-  // counting stopwatch timer
+  // Counting Time
 
   const countDown = () => {
-    let seconds = ++timerObj.seconds;
-    let time = secondsToTime(seconds);
-    console.log("count down", seconds);
-
-    setTimerObj({
-      ...timerObj,
-      time,
-      seconds,
-    });
+    dispatch(startCount(secondsToTime));
   };
 
-  // pause stopwatch
+  // Pause Stopwatch
 
   const stopTimer = () => {
     clearInterval(timeInterval);
-    setPauseStatus(true);
+    dispatch(stopCount(secondsToTime));
   };
 
-  // laps
+  // Add Laps
 
   const lapTimer = () => {
-    if (!pauseStatus && timerObj.seconds !== 0) {
-      let newlaps = [...laps];
-      newlaps.push({
-        ...timerObj.time,
-      });
-
-      setLaps(newlaps);
+    if (!pauseStatus) {
+      dispatch(addLap(time));
     }
   };
 
-  // reset stopwatch
+  // Reset Stopwatch
 
-  const resetTimer = () => {
+  const reset = () => {
     clearInterval(timeInterval);
-
-    setTimerObj({
-      time: { h: 0, m: 0, s: 0 },
-      seconds: 0,
-    });
-
-    setLaps([]);
+    dispatch(resetTimer());
+    dispatch(resetLap());
   };
 
   return (
@@ -92,7 +75,7 @@ export default function Stopwatch() {
           <Button clicked={startTimer}> start </Button>
           <Button clicked={stopTimer}> stop </Button>
           <Button clicked={lapTimer}> lap </Button>
-          <Button clicked={resetTimer}> reset </Button>
+          <Button clicked={reset}> reset </Button>
         </div>
       </div>
       <div className="time-laps">
@@ -105,23 +88,3 @@ export default function Stopwatch() {
     </>
   );
 }
-
-// Rax's Code
-
-// const [startTime, setStartTime] = useState(Math.floor(Date.now() / 1000));
-// const [currentTime, setCurrentTime] = useState(Math.floor(Date.now() / 1000));
-
-// useEffect(() => {
-//   const seccs = currentTime - startTime;
-//   setTimerObj({
-//     ...timerObj,
-//     time: secondsToTime(seccs),
-//     seconds: seccs,
-//   });
-// }, [currentTime]);
-
-// useEffect(() => {
-//   setInterval(() => {
-//     setCurrentTime(Math.floor(Date.now() / 1000));
-//   }, 1000);
-// }, []);
