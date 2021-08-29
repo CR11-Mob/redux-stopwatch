@@ -14,6 +14,6 @@ export default createReducer([], {
   },
 
   [resetLap.type]: (state, action) => {
-    state = [];
+    return [];
   },
 });

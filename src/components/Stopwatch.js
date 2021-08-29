@@ -65,8 +65,8 @@ export default function Stopwatch() {
     if (seconds !== 0) {
       clearInterval(timeInterval);
       dispatch(resetTimer());
+      dispatch(resetLap());
     }
-    // dispatch(resetLap());
   };
 
   return (
