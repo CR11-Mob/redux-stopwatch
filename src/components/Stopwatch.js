@@ -10,8 +10,8 @@ import secondsToTime from "../utilies/secondsToTime";
 
 import { useDispatch, useSelector } from "react-redux";
 
-import { startCount, stopCount, resetTimer } from "../store/timer/actions";
-import { addLap, resetLap } from "../store/laps/actions";
+import { startCount, stopCount, resetTimer } from "../store/timer";
+import { addLap, resetLap } from "../store/laps";
 
 export default function Stopwatch() {
   const dispatch = useDispatch();
@@ -39,30 +39,34 @@ export default function Stopwatch() {
   // Counting Time
 
   const countDown = () => {
-    dispatch(startCount(secondsToTime));
+    dispatch(startCount({ secondsToTime }));
   };
 
   // Pause Stopwatch
 
   const stopTimer = () => {
-    clearInterval(timeInterval);
-    dispatch(stopCount(secondsToTime));
+    if (!pauseStatus) {
+      clearInterval(timeInterval);
+      dispatch(stopCount());
+    }
   };
 
   // Add Laps
 
   const lapTimer = () => {
     if (!pauseStatus) {
-      dispatch(addLap(time));
+      dispatch(addLap({ time }));
     }
   };
 
   // Reset Stopwatch
 
   const reset = () => {
-    clearInterval(timeInterval);
-    dispatch(resetTimer());
-    dispatch(resetLap());
+    if (seconds !== 0) {
+      clearInterval(timeInterval);
+      dispatch(resetTimer());
+    }
+    // dispatch(resetLap());
   };
 
   return (

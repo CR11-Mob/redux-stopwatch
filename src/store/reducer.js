@@ -1,6 +1,6 @@
 import { combineReducers } from "redux";
-import timerReducer from "./timer/timerReducer";
-import lapsReducer from "./laps/lapsReducer";
+import timerReducer from "./timer";
+import lapsReducer from "../store/laps";
 
 export default combineReducers({
   tmr: timerReducer,

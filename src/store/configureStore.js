@@ -1,9 +1,20 @@
-import { createStore } from "redux";
+import { configureStore } from "@reduxjs/toolkit";
 import reducer from "./reducer";
+import { startCount } from "../store/timer";
 
-const store = createStore(
+const store = configureStore({
   reducer,
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-);
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        // Ignore these action types
+        ignoredActions: ["start"],
+        // Ignore these field paths in all actions
+        ignoredActionPaths: ["payload.secondsToTime"],
+        // Ignore these paths in the state
+        ignoredPaths: ["state.time"],
+      },
+    }),
+});
 
 export default store;
