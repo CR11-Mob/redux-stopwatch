@@ -1,6 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
 import reducer from "./reducer";
-import { startCount } from "../store/timer";
 
 const store = configureStore({
   reducer,
